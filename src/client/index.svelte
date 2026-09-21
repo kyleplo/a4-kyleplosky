@@ -6,7 +6,6 @@
     import Nav from "./components/Nav.svelte";
     import SignInDialog from "./components/SignInDialog.svelte";
     import SignUpDialog from "./components/SignUpDialog.svelte";
-    import CastVoteDialog from "./components/CastVoteDialog.svelte";
     import EditListDialog from "./components/EditListDialog.svelte";
     import { setAuthStatus } from "./auth";
 
@@ -39,7 +38,6 @@
     let signInDialog = $state(false);
     let signUpDialog = $state(false);
     let editListDialog = $state(false);
-    let castVoteDialog = $state(false);
 
     async function signOut() {
         await fetch("/api/sign-out", { method: "POST" }).then(r => r.json());
@@ -60,12 +58,9 @@
         refreshLists++;
         }} list={activeList} />
 {/if}
-{#if castVoteDialog}
-    <CastVoteDialog hide={() => castVoteDialog = false} />
-{/if}
 <main class="container">
     {#if page === "/" || page === "/index.html"}
-        <HomePage {changePage} refreshLists={refreshLists} showCreateList={() => {
+        <HomePage {changePage} {refreshLists} showCreateList={() => {
             activeList = null;
             editListDialog = true;
         }} showEditList={list => {
@@ -75,6 +70,11 @@
     {:else if page === "not-found"}
         <h1>Not Found</h1>
     {:else}
-        <ListPage />
+        <ListPage {page} {changePage} {refreshLists} showEditList={list => {
+            activeList = list;
+            editListDialog = true;
+        }} showCastVote={voteData => {
+            castVoteDialog = true;
+        }} />
     {/if}
 </main>

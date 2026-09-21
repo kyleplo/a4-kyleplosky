@@ -6,6 +6,8 @@
     let lists = $state([])
 
     $effect(async () => {
+        document.title = "Tierable";
+
         if (authStatus.loggedIn && refreshLists) {
             lists = await fetch("/api/list").then(r => r.json());
         } else {
