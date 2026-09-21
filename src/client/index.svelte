@@ -73,8 +73,6 @@
         <ListPage {page} {changePage} {refreshLists} showEditList={list => {
             activeList = list;
             editListDialog = true;
-        }} showCastVote={voteData => {
-            castVoteDialog = true;
         }} />
     {/if}
 </main>
